@@ -1,3 +1,41 @@
+# react-native-thermal-receipt-printer-image-qr-enhance
+
+- Fork from https://github.com/thiendangit/react-native-thermal-receipt-printer-image-qr
+- Fix and enhance for printing BLUETOOTH image url, base64 ONLY!
+
+## Main takeaway from the original
+- When assigning printer width. Need to use string '58' instead of '58mm'
+
+## Notes
+From the original code, Android seems to be fine but i have problems when using iOS device. The issue mainly stems from the handling of connected multiple bluetooth thermal printer at once.
+<br /><br />
+And when using iOS the printer print image very slow. (WIP)
+
+## New Example
+
+**`printImageBase64`**
+
+```tsx
+if (Platform.OS === 'ios') {
+  // Use react-native's Image.getSize if capture screen using ref to get real image rWIDTH and rHEIGHT
+  BLEPrinter.printImageBase64(base64Image, {
+    imageWidth: 384, // or 576 for 80mm
+    imageHeight: targetHeight, // rHEIGHT * (imageWidth / rWIDTH) to keeps the scale
+    printerWidthType: '58' // or '80'
+    paddingX: 0
+  });
+  // if not specify paddingX = 0, the image will have default padding which makes the alignment wrong. (only happens to iOS. stems from the iOS printer code)
+} else {
+  BLEPrinter.printImageBase64(base64Image, {
+    imageWidth: 384,
+    imageHeight: targetHeight
+  });
+}
+```
+
+<br />
+<br />
+
 # react-native-thermal-receipt-printer-image-qr
 
 ![npm](https://img.shields.io/npm/dw/react-native-thermal-receipt-printer-image-qr?logo=github)
